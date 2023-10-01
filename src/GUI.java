@@ -36,7 +36,7 @@ public class GUI extends JFrame {
 
     public GUI() {
         super("Simple Example");
-        this.setBounds(100, 100, 400, 250);
+        this.setBounds(100, 100, 600, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container container = this.getContentPane();
         label.setHorizontalTextPosition(JLabel.CENTER);
@@ -50,12 +50,16 @@ public class GUI extends JFrame {
 
         container.add(label, BorderLayout.NORTH);
         container.add(scrollPane, BorderLayout.CENTER);
+
         container.add(input, BorderLayout.SOUTH);
+        container.add(inputDescription, BorderLayout.SOUTH);
 
         ButtonGroup group = new ButtonGroup();
         button.addActionListener(new ButtonEventListener());
+        button.setSize(10,10);
         container.add(button, BorderLayout.EAST);
         deleteButton.addActionListener(new DeleteButtonEventListener());
+        deleteButton.setSize(10, 10);
         container.add(deleteButton, BorderLayout.WEST);
     }
 
@@ -69,9 +73,20 @@ public class GUI extends JFrame {
                     if (checkBox.isSelected()) {
                         String taskText = checkBox.getText();
 
+                        String pattern = "<font color='black'>(.*?)</font>";
+
+                        java.util.regex.Pattern regex = java.util.regex.Pattern.compile(pattern);
+                        java.util.regex.Matcher matcher = regex.matcher(taskText);
+
+                        while (matcher.find()) {
+                            String match = matcher.group(1);
+                            //System.out.println(match);
+                            taskText = match;
+                        }
 
                         BD bd = new BD();
                         bd.deleteElement(taskText);
+                        //System.out.println(taskText);
 
 
                         buttonPanel.remove(checkBox);
