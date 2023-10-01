@@ -52,7 +52,7 @@ public class GUI extends JFrame {
         container.add(scrollPane, BorderLayout.CENTER);
 
         container.add(input, BorderLayout.SOUTH);
-        container.add(inputDescription, BorderLayout.SOUTH);
+        //container.add(inputDescription, BorderLayout.SOUTH);
 
         ButtonGroup group = new ButtonGroup();
         button.addActionListener(new ButtonEventListener());
@@ -102,12 +102,18 @@ public class GUI extends JFrame {
     class ButtonEventListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String task = input.getText();
-            String description = inputDescription.getText();
 
-            if (!task.isEmpty()) {
+            // Split the input text into two parts based on "/"
+            String[] parts = task.split("/");
 
-                BD bd = new BD();
-                bd.addObj(task, description);
+            if (parts.length == 2) {
+                String mainTekst = parts[0].trim();
+                String description = parts[1].trim();
+
+                if (!mainTekst.isEmpty() && !description.isEmpty()) {
+                    BD bd = new BD();
+                    bd.addObj(mainTekst, description);
+                }
             }
 
             buttonPanel.removeAll();
@@ -119,13 +125,8 @@ public class GUI extends JFrame {
             revalidate();
             repaint();
         }
+    }
 
-
-
-
-
-
-}
 
     public static void main(String[] args) {
         GUI gui = new GUI();
